@@ -14,11 +14,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -36,30 +37,30 @@ public class MealServlet extends HttpServlet {
         log.debug("Init meal servlet");
         super.init(config);
         mealDao = new MealDaoMemory();
+        mealDao.add(new Meal(null, LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
+        mealDao.add(new Meal(null, LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));
+        mealDao.add(new Meal(null, LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500));
+        mealDao.add(new Meal(null, LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100));
+        mealDao.add(new Meal(null, LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000));
+        mealDao.add(new Meal(null, LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500));
+        mealDao.add(new Meal(null, LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("redirect to meals");
-
-        String forward = "";
-        String action = request.getParameter("action");
-
-        if (action.equalsIgnoreCase("delete")) {
-            Long mealId = Long.parseLong(request.getParameter("id"));
-            mealDao.delete(mealId);
-            forward = LIST_MEAL;
-            request.setAttribute("listMeals", getMealToListSortByDate());
-        } else if (action.equalsIgnoreCase("edit")) {
-            forward = INSERT_OR_EDIT;
-            Long mealId = Long.parseLong(request.getParameter("id"));
-            Meal meal = mealDao.getOne(mealId);
-            request.setAttribute("meal", meal);
-        } else if (action.equalsIgnoreCase("listMeals")) {
-            forward = LIST_MEAL;
-            request.setAttribute("listMeals", getMealToListSortByDate());
-        } else if (action.equalsIgnoreCase("add")) {
-            forward = INSERT_OR_EDIT;
+        request.setCharacterEncoding("UTF-8");
+        String action;
+        action = Objects.requireNonNull(request.getParameter("action"));
+        String forward;
+        switch (action) {
+            case ("add"):
+                forward = INSERT_OR_EDIT;
+                break;
+            default:
+                request.setAttribute("listMeals", getMealToList());
+                forward = LIST_MEAL;
+                break;
         }
 
         RequestDispatcher view = request.getRequestDispatcher(forward);
@@ -68,26 +69,51 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String mealId = req.getParameter("id");
+        req.setCharacterEncoding("UTF-8");
+        String mealId = Objects.requireNonNull(req.getParameter("id"));
+        String action = Objects.requireNonNull(req.getParameter("action"));
+
         Meal meal;
-        LocalDateTime date = LocalDate.parse(req.getParameter("date")).atStartOfDay();
-        if (mealId == null || mealId.isEmpty()) {
-            meal = new Meal(null, date, req.getParameter("description"),
-                    Integer.parseInt(req.getParameter("calories")));
-            mealDao.add(meal);
-        } else {
-            meal = new Meal(Long.parseLong(mealId), date, req.getParameter("description"),
-                    Integer.parseInt(req.getParameter("calories")));
-            mealDao.update(meal);
+        String forward;
+        LocalDateTime date;
+        switch (action) {
+            case ("delete"):
+                forward = LIST_MEAL;
+                mealDao.delete(Long.parseLong(mealId));
+                req.setAttribute("listMeals", getMealToList());
+                break;
+            case ("edit"):
+                forward = INSERT_OR_EDIT;
+                meal = mealDao.getOne(Long.parseLong(mealId));
+                req.setAttribute("meal", meal);
+                break;
+            case ("update"):
+                forward = LIST_MEAL;
+                if (mealId.equals("") || mealId.isEmpty()) {
+                    date = LocalDateTime.parse(req.getParameter("date"));
+                    meal = new Meal(null, date, req.getParameter("description"),
+                            Integer.parseInt(req.getParameter("calories")));
+                    mealDao.add(meal);
+                    req.setAttribute("listMeals", getMealToList());
+                } else {
+                    date = LocalDateTime.parse(req.getParameter("date"));
+
+                    meal = new Meal(Long.parseLong(mealId), date, req.getParameter("description"),
+                            Integer.parseInt(req.getParameter("calories")));
+                    mealDao.update(meal);
+                    req.setAttribute("listMeals", getMealToList());
+                    break;
+                }
+            default:
+                forward = LIST_MEAL;
+                req.setAttribute("listMeals", getMealToList());
         }
-        RequestDispatcher view = req.getRequestDispatcher(LIST_MEAL);
-        req.setAttribute("listMeals", getMealToListSortByDate());
+
+        RequestDispatcher view = req.getRequestDispatcher(forward);
         view.forward(req, resp);
     }
 
-    private List<MealTo> getMealToListSortByDate() {
-        List<MealTo> mealToList = MealsUtil.filteredByStreams(mealDao.getAll(), LocalTime.MIN, LocalTime.MAX, 2000);
-        return mealToList == null ? mealToList : mealToList.stream().sorted(Comparator.comparing(MealTo::getDateTime))
-                .collect(Collectors.toList());
+    private List<MealTo> getMealToList() {
+        return MealsUtil.filteredByStreams(mealDao.getAll(), LocalTime.MIN, LocalTime.MAX, 2000);
     }
 }

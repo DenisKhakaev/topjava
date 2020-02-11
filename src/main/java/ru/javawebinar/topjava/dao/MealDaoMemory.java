@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.atomic.LongAdder;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class MealDaoMemory implements MealDao {
 
-    private LongAdder counter = new LongAdder();
     private ConcurrentMap<Long, Meal> meals = new ConcurrentHashMap<>();
+    private AtomicLong counter = new AtomicLong();
 
     @Override
     public Meal getOne(Long id) {
@@ -20,8 +20,8 @@ public class MealDaoMemory implements MealDao {
 
     @Override
     public boolean add(Meal meal) {
-        counter.increment();
-        return meals.put(counter.sum(), new Meal(counter.sum(), meal.getDateTime(), meal.getDescription(), meal.getCalories())) != null;
+        Long id = counter.addAndGet(1L);
+        return meals.put(id, new Meal(id, meal.getDateTime(), meal.getDescription(), meal.getCalories())) != null;
     }
 
     @Override
