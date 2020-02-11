@@ -35,19 +35,19 @@
     </tr>
     <c:forEach var="meal" items="${listMeals}">
         <tr style="color: ${meal.excess ? 'red': 'green'}">
-            <td class="hide"><c:out value="${meal.id}"/></td>
+            <td class="hide">${meal.id}</td>
             <td><javatime:format value="${meal.dateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-            <td><c:out value="${meal.description}"/></td>
-            <td><c:out value="${meal.calories}"/></td>
-            <form action="meals" method="post" id="edit">
-                <td><input class="hide" type="text" name="id" value="<c:out value="${meal.id}"/>"/>
-                    <input class="hide" type="text" name="action" value="edit"/>
+            <td>${meal.description}</td>
+            <td>${meal.calories}</td>
+            <form action="meals" method="get" id="update">
+                <td><input class="hide" type="text" name="id" value="${meal.id}"/>
+                    <input class="hide" type="text" name="action" value="update"/>
                     <input type="submit" value="Update"/></td>
             </form>
             <form action="meals" method="post" id="delete">
-                <td><input class="hide" type="text" name="id" value="<c:out value="${meal.id}"/>"/>
+                <td><input class="hide" type="text" name="id" value="${meal.id}"/>
                     <input class="hide" type="text" name="action" value="delete"/>
-                    <input type="submit" value="Del"/></td>
+                    <input type="submit" value="Delete"/></td>
             </form>
         </tr>
     </c:forEach>

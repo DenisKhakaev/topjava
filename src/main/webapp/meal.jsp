@@ -14,15 +14,14 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <form method="POST" action='meals' name="addMeals">
-    <input class="hide" type="text" readonly="readonly" name="id" value="<c:out value="${meal.id}" />"/>
-    Date : <input type="datetime-local" name="date" value="${meal.dateTime}"
-                  required/>
+    <input class="hide" type="text" readonly="readonly" name="id" value="${meal.id}"/>
+    Date : <input type="datetime-local" name="date" value="${meal.dateTime}" required/>
     <br/>
-    Description: <input type="text" name="description" value="<c:out value="${meal.description}" />"/>
+    Description: <input type="text" name="description" value="${meal.description}"/>
     <br/>
-    Calories : <input type="number" name="calories" value="<c:out value="${meal.calories}" />"/>
+    Calories : <input type="number" name="calories" value="${meal.calories}"/>
     <br/>
-    <input class="hide" type="text" name="action" value="update"/>
+    <input class="hide" type="text" name="action" value="${meal eq null?'add':'update'}"/>
     <input type="submit" value="Submit"/>
 </form>
 </body>
