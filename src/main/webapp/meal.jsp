@@ -18,7 +18,7 @@
     <br/>
     Calories : <input type="number" name="calories" value="${meal.calories}"/>
     <br/>
-    <input class="hide" type="text" name="action" value="${meal eq null?'add1':'update'}"/>
+    <input class="hide" type="text" name="action" value="${meal eq null?'add':'update'}"/>
     <input type="submit" value="Submit"/>
 </form>
 </body>
