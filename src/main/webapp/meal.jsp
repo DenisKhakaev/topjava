@@ -5,10 +5,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>Add new Meal</title>
-    <style>
-        .hide {
-            display: none
-        }</style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
@@ -21,7 +18,7 @@
     <br/>
     Calories : <input type="number" name="calories" value="${meal.calories}"/>
     <br/>
-    <input class="hide" type="text" name="action" value="${meal eq null?'add':'update'}"/>
+    <input class="hide" type="text" name="action" value="${meal eq null?'add1':'update'}"/>
     <input type="submit" value="Submit"/>
 </form>
 </body>

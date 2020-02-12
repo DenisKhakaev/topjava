@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 public class MealDaoMemory implements MealDao {
 
@@ -17,9 +16,8 @@ public class MealDaoMemory implements MealDao {
 
     public MealDaoMemory() {
         counter = new AtomicLong();
-        meals = new ConcurrentHashMap(MealsUtil.getStartListMeals().stream()
-                .collect(Collectors.toMap(Meal::getId, meal -> meal)));
-        counter.set(((ConcurrentHashMap<Long, Meal>) meals).mappingCount());
+        meals = new ConcurrentHashMap<>();
+        MealsUtil.getStartListMeals().forEach(this::add);
     }
 
     @Override

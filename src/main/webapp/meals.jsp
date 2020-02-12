@@ -5,21 +5,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>Meals</title>
-    <style type="text/css">
-        table {
-            border-collapse: collapse;
-            text-align: center;
-        }
-
-        td, th {
-            border: 1px solid black;
-            padding: 7px;
-        }
-
-        .hide {
-            display: none
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
@@ -39,11 +25,7 @@
             <td><javatime:format value="${meal.dateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <form action="meals" method="get" id="update">
-                <td><input class="hide" type="text" name="id" value="${meal.id}"/>
-                    <input class="hide" type="text" name="action" value="update"/>
-                    <input type="submit" value="Update"/></td>
-            </form>
+            <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
             <form action="meals" method="post" id="delete">
                 <td><input class="hide" type="text" name="id" value="${meal.id}"/>
                     <input class="hide" type="text" name="action" value="delete"/>

@@ -45,9 +45,8 @@ public class MealServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         String action = request.getParameter("action");
-
+        String forward = LIST_MEAL;
         if (action != null) {
-            String forward;
             switch (action) {
                 case ("add"):
                     forward = INSERT_OR_EDIT;
@@ -58,37 +57,32 @@ public class MealServlet extends HttpServlet {
                     break;
                 default:
                     request.setAttribute("listMeals", getMealToList());
-                    forward = LIST_MEAL;
-                    break;
             }
-            request.getRequestDispatcher(forward).forward(request, response);
         } else {
             request.setAttribute("listMeals", getMealToList());
-            request.getRequestDispatcher(LIST_MEAL).forward(request, response);
         }
+        request.getRequestDispatcher(forward).forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String action = Objects.requireNonNull(request.getParameter("action"));
+        String action = request.getParameter("action");
 
-        switch (action) {
-            case ("delete"):
-                mealDao.delete(getId(request));
-                request.setAttribute("listMeals", getMealToList());
-                break;
-            case ("update"):
-                mealDao.update(new Meal(getId(request), getDate(request), getDescription(request), getCalories(request)));
-                request.setAttribute("listMeals", getMealToList());
-                break;
-            case ("add"):
-                mealDao.add(new Meal(null, getDate(request), getDescription(request), getCalories(request)));
-                request.setAttribute("listMeals", getMealToList());
-                break;
-            default:
-                request.setAttribute("listMeals", getMealToList());
+        if (action != null) {
+            switch (action) {
+                case ("delete"):
+                    mealDao.delete(getId(request));
+                    break;
+                case ("update"):
+                    mealDao.update(new Meal(getId(request), getDate(request), getDescription(request), getCalories(request)));
+                    break;
+                case ("add"):
+                    mealDao.add(new Meal(null, getDate(request), getDescription(request), getCalories(request)));
+                    break;
+            }
         }
+        request.setAttribute("listMeals", getMealToList());
         request.getRequestDispatcher(LIST_MEAL).forward(request, response);
     }
 
