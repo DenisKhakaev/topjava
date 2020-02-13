@@ -61,6 +61,7 @@ public class MealServlet extends HttpServlet {
         } else {
             request.setAttribute("listMeals", getMealToList());
         }
+
         request.getRequestDispatcher(forward).forward(request, response);
     }
 
@@ -82,8 +83,7 @@ public class MealServlet extends HttpServlet {
                     break;
             }
         }
-        request.setAttribute("listMeals", getMealToList());
-        request.getRequestDispatcher(LIST_MEAL).forward(request, response);
+        response.sendRedirect("meals");
     }
 
     private List<MealTo> getMealToList() {
