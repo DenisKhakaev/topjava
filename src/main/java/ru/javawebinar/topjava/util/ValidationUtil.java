@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.util;
 
 
 import ru.javawebinar.topjava.model.AbstractBaseEntity;
+import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 public class ValidationUtil {
@@ -11,8 +12,17 @@ public class ValidationUtil {
         return object;
     }
 
+    public static <T> T checkNotFoundWithId(T object, int id, int userId) {
+        checkNotFoundWithId(object != null, id, userId);
+        return object;
+    }
+
     public static void checkNotFoundWithId(boolean found, int id) {
         checkNotFound(found, "id=" + id);
+    }
+
+    public static void checkNotFoundWithId(boolean found, int id, int userId) {
+        checkNotFound(found, "id=" + id + ", userId=" + userId);
     }
 
     public static <T> T checkNotFound(T object, String msg) {
