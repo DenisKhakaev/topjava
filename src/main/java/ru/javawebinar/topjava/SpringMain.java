@@ -4,7 +4,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
+import ru.javawebinar.topjava.web.user.ProfileRestController;
 
 import java.util.Arrays;
 
@@ -15,6 +17,13 @@ public class SpringMain {
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
             adminUserController.create(new User("userName", "email@mail.ru", "password", Role.ROLE_ADMIN));
+
+            ProfileRestController profileRestController = appCtx.getBean(ProfileRestController.class);
+            profileRestController.getAll().forEach(user -> System.out.println("---" + user));
+
+
+            MealRestController mealRestController = appCtx.getBean(MealRestController.class);
+            mealRestController.getAll().forEach(meal -> System.out.println("Meal - " + meal));
         }
     }
 }
