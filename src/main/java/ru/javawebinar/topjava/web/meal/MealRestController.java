@@ -47,4 +47,12 @@ public class MealRestController {
         service.update(meal, authUserId());
     }
 
+    public void save(Meal meal) {
+        if (meal.getId() != null) {
+            update(meal, meal.getId());
+        } else {
+            create(meal);
+        }
+    }
+
 }
