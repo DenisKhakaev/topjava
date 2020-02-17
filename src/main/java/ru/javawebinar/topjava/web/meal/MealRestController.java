@@ -30,10 +30,10 @@ public class MealRestController {
         return service.get(id, authUserId());
     }
 
-    public Meal create(Meal meal) {
+    public Meal create(Meal meal, int userId) {
         log.info("create {}", meal);
         checkNew(meal);
-        return service.create(meal, authUserId());
+        return service.create(meal, userId);
     }
 
     public void delete(int id) {
@@ -43,16 +43,7 @@ public class MealRestController {
 
     public void update(Meal meal, int id) {
         log.info("update {} with id={} userId={}", meal, id);
-        assureIdConsistent(meal, id);
+        assureIdConsistent(meal, meal.getId());
         service.update(meal, authUserId());
     }
-
-    public void save(Meal meal) {
-        if (meal.getId() != null) {
-            update(meal, meal.getId());
-        } else {
-            create(meal);
-        }
-    }
-
 }

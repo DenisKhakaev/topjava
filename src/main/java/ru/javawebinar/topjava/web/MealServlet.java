@@ -43,8 +43,13 @@ public class MealServlet extends HttpServlet {
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")), SecurityUtil.authUserId());
 
-        log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        repository.save(meal);
+        if (meal.isNew()) {
+            log.info("Create {}", meal);
+            repository.create(meal, SecurityUtil.authUserId());
+        } else {
+            log.info("Update {}", meal);
+            repository.update(meal, SecurityUtil.authUserId());
+        }
         response.sendRedirect("meals");
     }
 

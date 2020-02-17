@@ -24,7 +24,14 @@ public class MealsUtil {
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100, 1),
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000, 1),
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500, 1),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410, 1)
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410, 1),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 28, 10, 0), "Завтрак_2", 500, 2),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 28, 13, 0), "Обед_2", 1000, 2),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 28, 20, 0), "Ужин_2", 500, 2),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 29, 0, 0), "Еда на граничное значение_2", 100, 2),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 29, 10, 0), "Завтрак_2", 1000, 2),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 29, 13, 0), "Обед_2", 500, 2),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 29, 20, 0), "Ужин_2", 410, 2)
     );
 
     public static List<MealTo> getTos(Collection<Meal> meals, int caloriesPerDay) {
@@ -49,6 +56,6 @@ public class MealsUtil {
     }
 
     private static MealTo createTo(Meal meal, boolean excess) {
-        return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess, meal.getUserId());
+        return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 }
