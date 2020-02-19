@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -9,6 +10,11 @@ public class DateTimeUtil {
 
     public static boolean isBetweenInclusive(LocalTime lt, LocalTime startTime, LocalTime endTime) {
         return lt.compareTo(startTime) >= 0 && lt.compareTo(endTime) <= 0;
+    }
+
+    public static boolean isBetweenDate(LocalDateTime mealDate, LocalDate startDate, LocalDate finishDate, LocalTime startTime, LocalTime finishTime) {
+        return mealDate.toLocalDate().compareTo(startDate) >= 0 && mealDate.toLocalDate().compareTo(finishDate) <= 0
+                && mealDate.toLocalTime().compareTo(startTime) >= 0 && mealDate.toLocalTime().compareTo(finishTime) <= 0;
     }
 
     public static String toString(LocalDateTime ldt) {

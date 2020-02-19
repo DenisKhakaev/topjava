@@ -27,22 +27,28 @@
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
-            <th>Start</th>
-            <th>Finish</th>
+            <th>Start date</th>
+            <th>Finish date</th>
+            <th>Start time</th>
+            <th>Finish time</th>
             <th colspan="2"></th>
         </tr>
         <tr>
             <form method="post" action="meals">
-                <td><input type="datetime-local" value="${startTime}" name="startTime"></td>
-                <td><input type="datetime-local" value="${finishTime}" name="finishTime"></td>
+                <td><input type="date" value="${startDate}" name="startDate"></td>
+                <td><input type="date" value="${finishDate}" name="finishDate"></td>
+                <td><input type="time" value="${startTime}" name="startTime"></td>
+                <td><input type="time" value="${finishTime}" name="finishTime"></td>
                 <td>
                     <button type="submit">Filter</button>
                 </td>
             </form>
             <form method="post" action="meals">
                 <td>
-                <input type="hidden" value="" name="startTime">
-                <input type="hidden" value="" name="finishTime">
+                    <input type="hidden" value="" name="startDate">
+                    <input type="hidden" value="" name="finishDate">
+                    <input type="hidden" value="" name="startTime">
+                    <input type="hidden" value="" name="finishTime">
                     <button type="submit">Clean</button>
                 </td>
             </form>

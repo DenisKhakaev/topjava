@@ -4,9 +4,11 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,17 +43,17 @@ public class MealService {
         checkNotFoundWithId(repository.save(user, userId), user.getId(), userId);
     }
 
-    public List<MealTo> getAllFilter(int userId, LocalDateTime startTime, LocalDateTime finishTime, int calories) {
-        return getFilterByTime(MealsUtil.getTos(getAll(userId), calories), startTime, finishTime);
+    public List<MealTo> getAllFilter(int userId, LocalDate startDate, LocalTime startTime, LocalDate finishDate, LocalTime finishTime, int calories) {
+        return getFilterByTime(MealsUtil.getTos(getAll(userId), calories), startDate, startTime, finishDate, finishTime);
     }
 
-    private List<MealTo> getFilterByTime(List<MealTo> mealToList, LocalDateTime startTime, LocalDateTime finishTime) {
-        if (startTime != null) {
-            mealToList = mealToList.stream().filter(e -> e.getDateTime().isAfter(startTime)).collect(Collectors.toList());
-        }
-        if (finishTime != null) {
-            mealToList = mealToList.stream().filter(e -> e.getDateTime().isBefore(finishTime)).collect(Collectors.toList());
-        }
-        return mealToList;
+    private List<MealTo> getFilterByTime(List<MealTo> mealToList, LocalDate startDate, LocalTime startTime, LocalDate finishDate, LocalTime finishTime) {
+        LocalDate finalStartDate = startDate == null ? LocalDate.MIN : startDate;
+        LocalTime finalStartTime = startTime == null ? LocalTime.MIN : startTime;
+        LocalDate finalFinishDate = finishDate == null ? LocalDate.MAX : finishDate;
+        LocalTime finalFinishTime = finishTime == null ? LocalTime.MAX : finishTime;
+        return mealToList.stream()
+                .filter(meal -> DateTimeUtil.isBetweenDate(meal.getDateTime(), finalStartDate, finalFinishDate, finalStartTime, finalFinishTime))
+                .collect(Collectors.toList());
     }
 }
