@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
+import ru.javawebinar.topjava.to.MealTo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
@@ -19,11 +21,6 @@ public class MealRestController {
 
     @Autowired
     private MealService service;
-
-    public List<Meal> getAll() {
-        log.info("getAll");
-        return service.getAll(authUserId());
-    }
 
     public Meal get(int id) {
         log.info("get {}", id);
@@ -45,5 +42,9 @@ public class MealRestController {
         log.info("update {} with id={} userId={}", meal, id);
         assureIdConsistent(meal, meal.getId());
         service.update(meal, authUserId());
+    }
+
+    public List<MealTo> getAllFilter(LocalDateTime startTime, LocalDateTime finishTime, int calories) {
+        return service.getAllFilter(authUserId(), startTime, finishTime, calories);
     }
 }
