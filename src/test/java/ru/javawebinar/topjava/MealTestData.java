@@ -19,6 +19,7 @@ public class MealTestData {
     public static final Meal MEAL_3 = new Meal(3, LocalDateTime.parse("2020-02-24T20:35:00"), "Пельмени", 800);
     public static final Meal MEAL_4 = new Meal(4, LocalDateTime.parse("2020-02-24T20:40:00"), "Суп", 330);
     public static final Meal MEAL_5 = new Meal(5, LocalDateTime.parse("2020-02-24T22:30:00"), "Яблоко", 50);
+    public static final Meal MEAL_6 = new Meal(6, LocalDateTime.parse("2020-02-26T22:30:00"), "Груша", 50);
 
     public static Meal getNew() {
         return new Meal(null, LOCAL_DATE_TIME.plusHours(1), "Обед", 500);
@@ -41,6 +42,6 @@ public class MealTestData {
     }
 
     public static void assertMatch(Iterable<Meal> actual, Iterable<Meal> expected) {
-        assertThat(actual).usingElementComparatorIgnoringFields("id", "user_id").isEqualTo(expected);
+        assertThat(actual).usingFieldByFieldElementComparator().isEqualTo(expected);
     }
 }

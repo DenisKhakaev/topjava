@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -46,7 +47,6 @@ public class MealServiceTest {
     @Test
     public void get() {
         Meal meal = service.get(MEAL_ID, USER_ID);
-        System.out.println(meal);
         assertMatch(meal, MEAL);
     }
 
@@ -83,6 +83,13 @@ public class MealServiceTest {
     @Test
     public void getAll() throws Exception {
         List<Meal> all = service.getAll(USER_ID);
-        assertMatch(all, MEAL_5, MEAL_4, MEAL_3, MEAL_2, MEAL_1);
+        assertMatch(all, MEAL_6, MEAL_5, MEAL_4, MEAL_3, MEAL_2, MEAL_1);
+    }
+
+    @Test
+    public void getBetweenHalfOpen() {
+        List<Meal> mealList = service.getBetweenHalfOpen(LocalDateTime.parse("2020-02-24T20:30:00").toLocalDate(),
+                LocalDateTime.parse("2020-02-24T20:45:00").toLocalDate(), USER_ID);
+        assertMatch(mealList, MEAL_5, MEAL_4, MEAL_3, MEAL_2, MEAL_1);
     }
 }
