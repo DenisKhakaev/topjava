@@ -69,11 +69,7 @@ public class JdbcMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=?", ROW_MAPPER, userId)
-                .stream()
-                .sorted(Comparator.comparing(Meal::getDateTime).thenComparing(Meal::getId).reversed())
-
-                .collect(Collectors.toList());
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=?", ROW_MAPPER, userId);
     }
 
     @Override

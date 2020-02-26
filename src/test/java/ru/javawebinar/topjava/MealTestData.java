@@ -13,7 +13,7 @@ public class MealTestData {
     public static final LocalDateTime LOCAL_DATE_TIME = LocalDateTime.of(2020, Month.FEBRUARY, 24, 19, 30);
     public static final int MEAL_ID = 1;
     public static final int MEAL_ID_2 = 2;
-    public static final Meal MEAL = new Meal(2, LOCAL_DATE_TIME, "Завтрак", 350);
+    public static final Meal MEAL = new Meal(1, LOCAL_DATE_TIME, "Завтрак", 350);
     public static final Meal MEAL_1 = new Meal(1, LocalDateTime.parse("2020-02-24T19:30"), "Завтрак", 350);
     public static final Meal MEAL_2 = new Meal(2, LocalDateTime.parse("2020-02-24T20:30:00"), "Обед", 500);
     public static final Meal MEAL_3 = new Meal(3, LocalDateTime.parse("2020-02-24T20:35:00"), "Пельмени", 800);
@@ -34,7 +34,7 @@ public class MealTestData {
     }
 
     public static void assertMatch(Meal actual, Meal expected) {
-        assertThat(actual).isEqualToIgnoringGivenFields(expected, "id");
+        assertThat(actual).isEqualToIgnoringGivenFields(expected);
     }
 
     public static void assertMatch(Iterable<Meal> actual, Meal... expected) {

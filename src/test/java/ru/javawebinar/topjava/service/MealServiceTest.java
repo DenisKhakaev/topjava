@@ -83,7 +83,7 @@ public class MealServiceTest {
     @Test
     public void getAll() throws Exception {
         List<Meal> all = service.getAll(USER_ID);
-        assertMatch(all, MEAL_6, MEAL_5, MEAL_4, MEAL_3, MEAL_2, MEAL_1);
+        assertMatch(all, MEAL_1, MEAL_2, MEAL_3, MEAL_4, MEAL_5, MEAL_6);
     }
 
     @Test

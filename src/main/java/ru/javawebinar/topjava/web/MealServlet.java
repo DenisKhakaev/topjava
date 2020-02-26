@@ -4,6 +4,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.ServletConfig;
@@ -16,7 +17,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
 import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
@@ -83,7 +86,10 @@ public class MealServlet extends HttpServlet {
                 break;
             case "all":
             default:
-                request.setAttribute("meals", mealController.getAll());
+                request.setAttribute("meals", mealController.getAll()
+                        .stream()
+                        .sorted(Comparator.comparing(MealTo::getDateTime).thenComparing(MealTo::getId).reversed())
+                        .collect(Collectors.toList()));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }
