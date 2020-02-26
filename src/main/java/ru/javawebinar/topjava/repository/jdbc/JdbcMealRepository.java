@@ -12,7 +12,9 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class JdbcMealRepository implements MealRepository {
@@ -67,7 +69,11 @@ public class JdbcMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=?", ROW_MAPPER, userId);
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=?", ROW_MAPPER, userId)
+                .stream()
+                .sorted(Comparator.comparing(Meal::getDateTime).thenComparing(Meal::getId).reversed())
+
+                .collect(Collectors.toList());
     }
 
     @Override
