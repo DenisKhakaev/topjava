@@ -1,4 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/942e95027324412880145f3caddcd902)](https://www.codacy.com/manual/DenisKhakaev/topjava?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DenisKhakaev/topjava&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/DenisKhakaev/topjava.svg?branch=master)](https://travis-ci.org/DenisKhakaev/topjava)
 
 Java Enterprise Online Project 
 ===============================
