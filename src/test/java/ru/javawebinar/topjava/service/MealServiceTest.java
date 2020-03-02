@@ -39,6 +39,12 @@ public class MealServiceTest {
     private static final Logger log = LoggerFactory.getLogger(SpringJUnit4ClassRunner.class);
     private static StringBuilder logsTime = new StringBuilder("Time all methods:\n");
 
+    @Autowired
+    private MealService service;
+
+    @Autowired
+    private MealRepository repository;
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -46,21 +52,16 @@ public class MealServiceTest {
     public Stopwatch stopwatch = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
-            String logMethod = "Method: " + description.getMethodName() + ", time = " + TimeUnit.NANOSECONDS.toMillis(nanos) + " ms";
+            String logMethod = description.getMethodName() + ", time = " + TimeUnit.NANOSECONDS.toMillis(nanos) + " ms";
             log.info(logMethod);
             logsTime.append(logMethod).append("\n");
         }
     };
 
     @AfterClass
-    public static void Destroy() {
+    public static void destroy() {
         log.info(logsTime.toString());
     }
-
-    @Autowired
-    private MealService service;
-    @Autowired
-    private MealRepository repository;
 
     @Test
     public void delete() throws Exception {
