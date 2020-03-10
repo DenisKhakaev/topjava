@@ -42,7 +42,7 @@ public abstract class JdbcMealRepository<T> implements MealRepository {
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
-                .addValue("date_time", meal.getDateTime())
+                .addValue("date_time", converterDate(meal.getDateTime()))
                 .addValue("user_id", userId);
 
         if (meal.isNew()) {
