@@ -21,10 +21,10 @@ public class DataJpaMealRepository implements MealRepository {
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
-        meal.setUser(crudUserRepository.getOne(userId));
         if (!meal.isNew() && get(meal.getId(), userId) == null) {
             return null;
         }
+        meal.setUser(crudUserRepository.getOne(userId));
         return crudMealRepository.save(meal);
     }
 
@@ -35,7 +35,7 @@ public class DataJpaMealRepository implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-        return crudMealRepository.getOne(id, userId);
+        return crudMealRepository.getMeal(id, userId);
     }
 
     @Override
